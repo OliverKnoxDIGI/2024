@@ -1,4 +1,4 @@
-
+//shared with Mr Hansen successfully
 const byte PAWPIN1 = 1;
 const byte PAWPIN2 = 2;
 const byte PAWPIN3 = 3;
