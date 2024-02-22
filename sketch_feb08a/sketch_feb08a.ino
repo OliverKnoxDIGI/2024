@@ -1,6 +1,10 @@
+<<<<<<< HEAD
 #include <Servo.h>
 
 
+=======
+//shared with Mr Hansen successfully
+>>>>>>> 80b398d654209021c5cd8ea39d2e1b2af958805f
 const byte PAWPIN1 = 1;
 const byte PAWPIN2 = 2;
 const byte PAWPIN3 = 3;
