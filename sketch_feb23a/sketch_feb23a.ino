@@ -1,5 +1,5 @@
 //oli knox 19308
-
+//HAN COMMENT nice work Oliver - remember to give a general comment at the start of every method
 #include <Adafruit_LiquidCrystal.h> // Include the Adafruit LiquidCrystal library
 
 long randNumber; // Declare a variable to store random numbers
