@@ -1,11 +1,12 @@
 //oliver knox 19308
 //keep talking assesment
 
-#include "LibPrintf.h"
 
 const int wire_1 = 1;
 const int wire_2 = 2;
 const int wire_3 = 3;
+const int failLed = 9;
+const int passedLed = 10; 
 
 const int button1 = 4;
 const int button2 = 5;
@@ -26,6 +27,9 @@ void setup() {
   pinMode(wire_1, INPUT);
   pinMode(wire_2, INPUT);
   pinMode(wire_3, INPUT);
+  pinMode(failLed, OUTPUT);
+  pinMode(passedLed, OUTPUT);
+
 }
 
 void loop() {
@@ -43,18 +47,23 @@ boolean cut_wires() {
   if (digitalRead(wire_1) == LOW) {
 
     printf("task failed");
+    digitalWrite(failLed) = HIGH;
+    digitalWrite(passedLed) = LOW;
     return false;
   }
 
   if (digitalRead(wire_2) == LOW)  {
-
+    digitalWrite(failLed) = HIGH;
+     digitalWrite(passedLed) = LOW;
+    
     printf("task failed");
     return false;
 
   }
 
   if (digitalRead(wire_3) == LOW)  {
-
+    digitalWrite(passedLed) = HIGH;
+    digitalWrite(failLed) = LOW;
     printf("task complete");
     return true;
 
