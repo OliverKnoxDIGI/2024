@@ -36,7 +36,7 @@ void loop() {
   // put your main code here, to run repeatedly:
   boolean val = cut_wires();
   if (cut_wires() == true) {
-    boolean buttons();
+    buttons();
   }
 }
 
@@ -47,14 +47,14 @@ boolean cut_wires() {
   if (digitalRead(wire_1) == LOW) {
 
     printf("task failed");
-    digitalWrite(failLed) = HIGH;
-    digitalWrite(passedLed) = LOW;
+     digitalWrite(passedLed, LOW);
+    digitalWrite(failLed, HIGH);
     return false;
   }
 
   if (digitalRead(wire_2) == LOW)  {
-    digitalWrite(failLed) = HIGH;
-     digitalWrite(passedLed) = LOW;
+     digitalWrite(passedLed, LOW);
+    digitalWrite(failLed, HIGH);
     
     printf("task failed");
     return false;
@@ -62,8 +62,8 @@ boolean cut_wires() {
   }
 
   if (digitalRead(wire_3) == LOW)  {
-    digitalWrite(passedLed) = HIGH;
-    digitalWrite(failLed) = LOW;
+  digitalWrite(passedLed, HIGH);
+    digitalWrite(failLed, LOW);
     printf("task complete");
     return true;
 
