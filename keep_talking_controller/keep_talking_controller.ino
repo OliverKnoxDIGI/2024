@@ -6,7 +6,7 @@ const byte HELPER_ADDR = 1;
 //need an id to use for the peripheral/slave
 const byte MESSAGE_SIZE = 1;
 const byte LED = 13;
-const int aliveLED = 1;
+const int aliveLED = 2;
 
 /*
   this variable is where we will save the 
@@ -14,7 +14,7 @@ const int aliveLED = 1;
   its only an int because we know that is the
   datatype that will be passed
 */
-int alive = 1;
+boolean alive = true;
 
 void setup(){
   pinMode(LED, OUTPUT);
@@ -38,9 +38,9 @@ void loop(){
     peripheral/slave may send less than requested
   */
   while (Wire.available()) { 
-    //read the transmission and save it to the blinkSpeed variable
+    //read the transmission and save it to the alive variable
     alive = Wire.read();
-    Serial.println(alive); 
+    Serial.println(alive);
   }
   
   digitalWrite(aliveLED, alive);
