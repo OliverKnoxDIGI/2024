@@ -18,7 +18,7 @@ int alive = 1;
 
 void setup(){
   pinMode(LED, OUTPUT);
-  pinmode(aliveLED, OUTPUT);
+  pinMode(aliveLED, OUTPUT);
   
   //initialize Wire library 
   Wire.begin();
