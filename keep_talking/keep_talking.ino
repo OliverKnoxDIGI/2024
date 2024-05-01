@@ -102,10 +102,11 @@ boolean cut_wires() {
   }
 }
 
-//button seq = 1,2,3,4,5 (right to left)
+//button seq = 1,2,3,4,5 (left to right)
 
-//2.5.24 CURRENT LESSONS SPENT ON BUTTONS: 3
+//1.5.24 CURRENT LESSONS SPENT ON BUTTONS: 3
 // NEED HELP
+// 2.5.24 WORKS!!! IDK WHY BUT IT WORKS
 boolean buttons() {
 
   //5 buttons pressed in correct sequence
@@ -115,60 +116,62 @@ boolean buttons() {
 
 
   // if button 5 is pressed
-  if (button5 == HIGH) {
+  if (digitalRead(button5) == HIGH) {
     // check if button 4 is pressed, if it isnt: lose
-    if (button4 == LOW) {
+    if (digitalRead(button4) == LOW) {
       digitalWrite(failLed, HIGH);
       return false;
     }
+  }
 
-    // if button 4 is pressed
-    if (button4 == HIGH) {
-      // check if button 3 is pressed, if it isnt: lose
-      if (button3 == LOW) {
-        digitalWrite(failLed, HIGH);
-        return false;
-      }
+  // if button 4 is pressed
+  if (digitalRead(button4) == HIGH) {
+    // check if button 3 is pressed, if it isnt: lose
+    if (digitalRead(button3) == LOW) {
+      digitalWrite(failLed, HIGH);
+      return false;
+    }
+  }
 
-      // if button 3 is pressed
-      if (button3 == HIGH) {
-        // check if button 2 is pressed, if it isnt: lose
-        if (button2 == LOW) {
-          digitalWrite(failLed, HIGH);
-          return false;
-        }
+  // if button 3 is pressed
+  if (digitalRead(button3) == HIGH) {
+    // check if button 2 is pressed, if it isnt: lose
+    if (digitalRead(button2) == LOW) {
+      digitalWrite(failLed, HIGH);
+      return false;
+    }
+  }
 
-        // if button 2 is pressed
-        if (button2 == HIGH) {
-          // check if button 1 is pressed, if it isnt: lose
-          if (button1 == LOW) {
-            digitalWrite(failLed, HIGH);
-            return false;
-          }
+  // if button 2 is pressed
+  if (digitalRead(button2) == HIGH) {
+    // check if button 1 is pressed, if it isnt: lose
+    if (digitalRead(button1) == LOW) {
+      digitalWrite(failLed, HIGH);
+      return false;
+    }
+  }
 
-          // if button 5 is pressed
-          if (button5 == HIGH) {
-            // check if button 4 is pressed, if it is: win
-            if (button4 == HIGH) {
-              if (button3 == HIGH) {
-                if (button2 == HIGH) {
-                  if (button1 == HIGH) {
-                    digitalWrite(passedLed, HIGH);
-                    return true;
-                  }
-                }
-
-
-
-
-              }
-            }
+  // if button 5 is pressed
+  if (digitalRead(button5)== HIGH) {
+    // check if button 4 is pressed, if it is: win
+    if (digitalRead(button4) == HIGH) {
+      if (digitalRead(button3) == HIGH) {
+        if (digitalRead(button2) == HIGH) {
+          if (digitalRead(button1) == HIGH) {
+            digitalWrite(passedLed, HIGH);
+            return true;
           }
         }
+
+
+
+
       }
     }
   }
 }
+
+
 
 //TEACHER COMMENTS so what is this method for and what potential values are expected to be sent?
 void requestEvent() {
