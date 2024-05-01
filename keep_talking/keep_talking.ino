@@ -2,7 +2,7 @@
 //keep talking assesment
 
 // using the wire libary so we can communicate using two or more arduinos
-#include <Wire.h> 
+#include <Wire.h>
 
 //Helper address is used as a constant to send the information to the controller
 const byte HELPER_ADDR = 1;
@@ -26,26 +26,19 @@ const int button3 = 6;
 const int button4 = 7;
 const int button5 = 8;
 
-// setting the "button pressed" vaiable to false, otherwise the player would win instantly
-boolean button1_pressed = false;
-boolean button2_pressed = false;
-boolean button3_pressed = false;
-boolean button4_pressed = false;
-boolean button5_pressed = false;
-
 
 void setup() {
   // put your setup code here, to run once:
   // wire begin for helper address, request event, and serial monitor
-    Wire.begin(HELPER_ADDR);
-   Wire.onRequest(requestEvent);
+  Wire.begin(HELPER_ADDR);
+  Wire.onRequest(requestEvent);
   Serial.begin(9600);
-  
+
   // setting the wire pins to input
   pinMode(wire_1, INPUT);
   pinMode(wire_2, INPUT);
   pinMode(wire_3, INPUT);
-  
+
   // setting the LED pins to output
   pinMode(failLed, OUTPUT);
   pinMode(passedLed, OUTPUT);
@@ -57,13 +50,13 @@ void loop() {
   // getting the value from the game code, and determaining if the player passed or not
   boolean val = cut_wires();
   if (val == true) {
-  // event won
+    // event won
     alive = 1;
   } else {
-   //  event lost
-     alive = 0;
+    //  event lost
+    alive = 0;
   }
-  
+
   // same as prev for buttons game
   boolean val2 = buttons();
   if (val2 == true) {
@@ -81,7 +74,7 @@ boolean cut_wires() {
   //3 wires
   digitalWrite(failLed, LOW);
   digitalWrite(passedLed, LOW);
-// left most wire
+  // left most wire
   // check if the pushbutton is pressed. If it is, the buttonState is HIGH:
   if (digitalRead(wire_1) == LOW) {
 
@@ -90,7 +83,7 @@ boolean cut_wires() {
     digitalWrite(failLed, HIGH);
     return false;
   }
-// middle wire
+  // middle wire
   if (digitalRead(wire_2) == LOW)  {
     digitalWrite(passedLed, LOW);
     digitalWrite(failLed, HIGH);
@@ -99,7 +92,7 @@ boolean cut_wires() {
     return false;
 
   }
-// right most wire
+  // right most wire
   if (digitalRead(wire_3) == LOW)  {
     digitalWrite(passedLed, HIGH);
     digitalWrite(failLed, LOW);
@@ -110,62 +103,75 @@ boolean cut_wires() {
 }
 
 //button seq = 1,2,3,4,5 (right to left)
-//TEACHER COMMENTS also explain where the return statement has disappeared to?
+
+//2.5.24 CURRENT LESSONS SPENT ON BUTTONS: 3
+// NEED HELP
 boolean buttons() {
-button1_pressed = false;
-button2_pressed = false;
-button3_pressed = false;
-button4_pressed = false;
 
-  
-  
   //5 buttons pressed in correct sequence
+  // high = pressed
+  // low = untouched
 
-  if (digitalRead(button1) == HIGH) {
-    button1_pressed = true;
-    Serial.println("correct button pressed");
-  }
 
-  if (digitalRead(button2) == HIGH && button1_pressed == true) {
-    button2_pressed = true;
-    Serial.println("correct button pressed");
-  } else if (digitalRead(button2) == HIGH && button1_pressed == false) {
-    Serial.println("task failed");
-    return false;
-  }
 
-  if (digitalRead(button3) == HIGH && button2_pressed == true) {
-    button3_pressed = true;
-    Serial.println("correct button pressed");
-  }
-  else if (digitalRead(button3) == HIGH && button2_pressed == false) {
-    Serial.println("task failed");
-    return false;
-  }
+  // if button 5 is pressed
+  if (button5 == HIGH) {
+    // check if button 4 is pressed, if it isnt: lose
+    if (button4 == LOW) {
+      digitalWrite(failLed, HIGH);
+      return false;
+    }
 
-  if (digitalRead(button4) == HIGH && button3_pressed == true) {
-    button4_pressed = true;
-    Serial.println("correct button pressed");
-  }
-  else if (digitalRead(button4) == HIGH && button3_pressed == false) {
-    Serial.println("task failed");
-    return false;
-  }
+    // if button 4 is pressed
+    if (button4 == HIGH) {
+      // check if button 3 is pressed, if it isnt: lose
+      if (button3 == LOW) {
+        digitalWrite(failLed, HIGH);
+        return false;
+      }
 
-  if (digitalRead(button5) == HIGH && button4_pressed == true) {
-    button5_pressed = true;
-    Serial.println("correct button pressed");
-    return true;
-  }
-  else if (digitalRead(button5) == HIGH && button4_pressed == false) {
-    Serial.println("task failed");
-    return false;
-  }
+      // if button 3 is pressed
+      if (button3 == HIGH) {
+        // check if button 2 is pressed, if it isnt: lose
+        if (button2 == LOW) {
+          digitalWrite(failLed, HIGH);
+          return false;
+        }
 
+        // if button 2 is pressed
+        if (button2 == HIGH) {
+          // check if button 1 is pressed, if it isnt: lose
+          if (button1 == LOW) {
+            digitalWrite(failLed, HIGH);
+            return false;
+          }
+
+          // if button 5 is pressed
+          if (button5 == HIGH) {
+            // check if button 4 is pressed, if it is: win
+            if (button4 == HIGH) {
+              if (button3 == HIGH) {
+                if (button2 == HIGH) {
+                  if (button1 == HIGH) {
+                    digitalWrite(passedLed, HIGH);
+                    return true;
+                  }
+                }
+
+
+
+
+              }
+            }
+          }
+        }
+      }
+    }
+  }
 }
 
 //TEACHER COMMENTS so what is this method for and what potential values are expected to be sent?
-void requestEvent(){
+void requestEvent() {
   //reply to the transmission request with this message
   Wire.write(alive);
   Serial.println(alive);
