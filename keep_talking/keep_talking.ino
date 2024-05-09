@@ -28,6 +28,12 @@ const int button3 = 6;
 const int button4 = 7;
 const int button5 = 8;
 
+int position = 0;
+
+char ans[] = { 'Q', 'W', 'E', 'R', 'T', '\0'};
+char guess[] = { 'x', 'x', 'x', 'x', 'x', '\0'};
+  
+
 int val = 0;
 int val2 = 0;
 
@@ -75,10 +81,6 @@ void loop() {
   } else {}
 
 
-
-
-
-
   // same as prev for buttons game
 
   int val2 = buttons();
@@ -89,7 +91,7 @@ void loop() {
       // make sure game cannot be won again
       buttonPassed = 1;
       // send alive value to controller ( add one)
-      alive = alive + 1;
+      alive = alive + 8;
 
     }
     // if the game has already been won
@@ -143,88 +145,57 @@ int cut_wires() {
   }
 }
 
-//button seq = 1,2,3,4,5 (left to right)
+
+
+
+
+//button seq = 1,2,3,4,5 (right to left)
 // 0 is unplayed, 1 is lose, and 2 is win
 int buttons() {
-
+  
   //5 buttons pressed in correct sequence
-  // HIGH = pressed
-  // LOW = untouched
+  // LOW = pressed
+  // HIGH = untouched
 
-  // if button 5 is pressed
-  if (digitalRead(button5) == HIGH) {
-    // check if button 4 is pressed, if it isnt: lose
-    if (digitalRead(button4) == LOW) {
-      digitalWrite(failLed, HIGH);
-      return 1;
-    }
+  
+  if (digitalRead(button1) == LOW){
+    guess[position] = 'Q';
+    position++;
+    delay(500);   
   }
-
-  // if button 4 is pressed
-  if (digitalRead(button4) == HIGH) {
-    // check if button 3 is pressed, if it isnt: lose
-    if (digitalRead(button3) == LOW) {
-      digitalWrite(failLed, HIGH);
-      return 1;
-    }
+    if (digitalRead(button2) == LOW){
+    guess[position] = 'W';
+    position++;
+    delay(500);
+    if ((ans[position]) != (guess[position])){return 1;}
   }
-
-  // if button 3 is pressed
-  if (digitalRead(button3) == HIGH) {
-    // check if button 2 is pressed, if it isnt: lose
-    if (digitalRead(button2) == LOW) {
-      digitalWrite(failLed, HIGH);
-      return 1;
-    }
+    if (digitalRead(button3) == LOW){
+    guess[position] = 'E';
+    position++;
+    delay(500);
+    if ((ans[position]) != (guess[position])){return 1;}
   }
-
-  // if button 2 is pressed
-  if (digitalRead(button2) == HIGH) {
-    // check if button 1 is pressed, if it isnt: lose
-    if (digitalRead(button1) == LOW) {
-      digitalWrite(failLed, HIGH);
-      return 1;
-    }
+   if (digitalRead(button4) == LOW){
+    guess[position] = 'R';
+    position++;
+    delay(500);
+    if ((ans[position]) != (guess[position])){return 1;}
   }
-
-  // if button 5 is pressed
-  if (digitalRead(button5) == HIGH) {
-    // check if button 4 is pressed, if it is...
-    if (digitalRead(button4) == HIGH) {
-      // check if button 3 is pressed, if it is...
-      if (digitalRead(button3) == HIGH) {
-        // check if button 2 is pressed, if it is...
-        if (digitalRead(button2) == HIGH) {
-          // check if button 1 is pressed, if it is turn on the pass LED, and return 2
-          if (digitalRead(button1) == HIGH) {
-            digitalWrite(passedLed, HIGH);
-            return 2;
-          }
-        }
-      }
-    }
-  }
-
-  // if button 5 is not pressed
-  if (digitalRead(button5) == LOW) {
-    // check if button 4 is pressed, if it isnt...
-    if (digitalRead(button4) == LOW) {
-      // check if button 3 is pressed, if it isnt...
-      if (digitalRead(button3) == LOW) {
-        // check if button 2 is pressed, if it isnt...
-        if (digitalRead(button2) == LOW) {
-          // check if button 1 is pressed, and return 0
-          if (digitalRead(button1) == LOW) {
-            return 0;
-          }
-        }
-      }
-    }
+    if (digitalRead(button5) == LOW){
+    guess[position] = 'T';
+    position++;
+    delay(500);
+    if ((ans[position]) != (guess[position])){return 1;}
   }
   
+  if (ans[2] == guess[2]) {return 2;}
+  
+  
+  
+  
+  
+
 }
-
-
 
 //TEACHER COMMENTS so what is this method for and what potential values are expected to be sent?
 void requestEvent() {

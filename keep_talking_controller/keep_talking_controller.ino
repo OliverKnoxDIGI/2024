@@ -5,7 +5,7 @@
 
 //So we can use the Wire library
 #include <Wire.h>
-int t = 3000;
+
 // desclaring the LCD variable and initiating the LCD
 LiquidCrystal_I2C lcd(32, 16, 2);
 
@@ -24,12 +24,13 @@ const int aliveLED = 2;
   it will be a 0, 1, 2, or 99 for alive, passed, won and lost. 
 */
 int alive = 0;
-
+int t = millis;
 
 void setup() {
   lcd.begin(16, 2);
   lcd.init();
   lcd.backlight();
+
 
 
   pinMode(aliveLED, OUTPUT);
@@ -41,7 +42,9 @@ void setup() {
 }
 
 void loop() {
-  delay(50);
+  lcd.print(alive);
+   
+  delay(5000);
 
   //request a transmission with this id and message size
   Wire.requestFrom(HELPER_ADDR, MESSAGE_SIZE);
@@ -90,12 +93,12 @@ if (alive == 2) {
     lcd.print("Game Over");
     delay(2000);
      lcd.clear();
-    cd.print(alive);
+    lcd.print(alive);
     delay(2000);
     lcd.clear();
 
     // this delay is to ensure player cannot wait out timer (aprox 277 hours)
-    delay(999999999);
+    delay(9);
         lcd.clear();
   }
 
