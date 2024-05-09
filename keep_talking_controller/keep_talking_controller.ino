@@ -19,11 +19,11 @@ const int aliveLED = 2;
 /*
   this variable is where we will save the
   message/reply from the peripheral/slave
-  its only an boolean because we know that is the
+  its only an int because we know that is the
   datatype that will be passed,
-  it will be a true or false/alive or dead
+  it will be a 0, 1, 2, or 99 for alive, passed, won and lost. 
 */
-boolean alive = true;
+int alive = 0;
 
 
 void setup() {
@@ -58,21 +58,45 @@ void loop() {
 
   digitalWrite(aliveLED, alive);
 
-
-  if (alive == 1) {
+if (alive == 0) {
     lcd.print("alive...");
+    delay(2000);
+    lcd.clear();
+  lcd.print(alive);
     delay(2000);
     lcd.clear();
 
   }
-  if (alive == 0) {
+  if (alive == 1) {
+    lcd.print("passed...");
+    delay(2000);
+    lcd.clear();
+      lcd.print(alive);
+    delay(2000);
+    lcd.clear();
+  }
+    
+if (alive == 2) {
+    lcd.print("GAME WON!!!");
+    delay(2000);
+    lcd.clear();
+    lcd.print(alive);
+    delay(2000);
+    lcd.clear();
+  }
+  
+  if (alive == 99) {
     // print "game over to the LCD screen, this lets the player know they have lost
     lcd.print("Game Over");
     delay(2000);
+     lcd.clear();
+    cd.print(alive);
+    delay(2000);
     lcd.clear();
 
-    // this delay is to ensure
+    // this delay is to ensure player cannot wait out timer (aprox 277 hours)
     delay(999999999);
+        lcd.clear();
   }
 
 
