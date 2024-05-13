@@ -9,8 +9,9 @@ const byte HELPER_ADDR = 1;
 
 // this variable is used to determain if the player is alive or not, and later send to the controller
 int alive = 0;
-int wirePassed = 0;
-int buttonPassed = 0;
+// help to determain if player has already passed a minigame
+bool wirePassed = false;
+bool buttonPassed = false;
 
 // set the wire pins to constants, allowing changability and readability
 const int wire_1 = 1;
@@ -18,8 +19,6 @@ const int wire_2 = 2;
 const int wire_3 = 3;
 
 // setting the pass and fail LEDs for prev reasons
-const int failLed = 9;
-const int passedLed = 10;
 
 // same as prev but for the buttons game
 const int button1 = 4;
@@ -32,7 +31,7 @@ int position = 0;
 
 char ans[] = { 'Q', 'W', 'E', 'R', 'T', '\0'};
 char guess[] = { 'x', 'x', 'x', 'x', 'x', '\0'};
-  
+
 
 int val = 0;
 int val2 = 0;
@@ -43,17 +42,13 @@ void setup() {
   // wire begin for helper address, request event, and serial monitor
   Wire.begin(HELPER_ADDR);
   Wire.onRequest(requestEvent);
-  Serial.begin(9600);
 
   // setting the wire pins to input
   pinMode(wire_1, INPUT);
   pinMode(wire_2, INPUT);
   pinMode(wire_3, INPUT);
 
-  // setting the LED pins to output
-  pinMode(failLed, OUTPUT);
-  pinMode(passedLed, OUTPUT);
-
+  Serial.begin(9600);
 
 }
 
@@ -64,9 +59,9 @@ void loop() {
   // check if won
   if (val == 2) {
     // check if minigame has already been won, if not
-    if (wirePassed == 0) {
+    if (wirePassed == false) {
       // make sure game cannot be won again
-      wirePassed = 1;
+      wirePassed = true;
       // send alive value to controller (add one)
       alive = alive + 1;
     }
@@ -87,11 +82,11 @@ void loop() {
   if (val2 == 2) {
     // event won
     // check if minigame has already been won, if not
-    if (buttonPassed == 0) {
+    if (buttonPassed == false) {
       // make sure game cannot be won again
-      buttonPassed = 1;
+      buttonPassed = true;
       // send alive value to controller ( add one)
-      alive = alive + 8;
+      alive = alive + 1;
 
     }
     // if the game has already been won
@@ -101,6 +96,8 @@ void loop() {
   } else if (val2 == 1) {
     alive = 99;
     //Serial.println("game lost");
+
+    //handling is return = 0
   } else {}
 
 
@@ -111,27 +108,23 @@ void loop() {
 // 0 is unplayed, 1 is lose, and 2 is win
 int cut_wires() {
   //3 wires
-  digitalWrite(failLed, LOW);
-  digitalWrite(passedLed, LOW);
+
   // left most wire
+
   // check if the pushbutton is pressed. If it is, the buttonState is HIGH:
   if (digitalRead(wire_1) == LOW) {
-    digitalWrite(passedLed, LOW);
-    digitalWrite(failLed, HIGH);
+    //fail
     return 1;
   }
   // middle wire
   if (digitalRead(wire_2) == LOW)  {
-    digitalWrite(passedLed, LOW);
-    digitalWrite(failLed, HIGH);
+
     return 1;
 
   }
   // right most wire
   //winning wire
   if (digitalRead(wire_3) == LOW)  {
-    digitalWrite(passedLed, HIGH);
-    digitalWrite(failLed, LOW);
     return 2;
 
   }
@@ -152,48 +145,75 @@ int cut_wires() {
 //button seq = 1,2,3,4,5 (right to left)
 // 0 is unplayed, 1 is lose, and 2 is win
 int buttons() {
-  
-  //5 buttons pressed in correct sequence
-  // LOW = pressed
-  // HIGH = untouched
 
-  
-  if (digitalRead(button1) == LOW){
+  //5 buttons pressed in correct sequence
+  // LOW = untouched
+  // HIGH = pressed
+
+  // check if the first "button" is pressed, if it is
+  if (digitalRead(button1) == HIGH) {
+    
+      
+    //position 0 of the guess array is changed from x to a Q
     guess[position] = 'Q';
-    position++;
-    delay(500);   
-  }
-    if (digitalRead(button2) == LOW){
+
+    if ((ans[0]) == (guess[0])) {   
+
+    } else {return 1;}
+    // add one to the position
+    position=1;
+     
+    }
+
+  // check if the second "button" is pressed, if it is
+   if (digitalRead(button2) == HIGH) {
+    //position 1 of the guess array is changed from x to a W
     guess[position] = 'W';
-    position++;
-    delay(500);
-    if ((ans[position]) != (guess[position])){return 1;}
+    //check if guess position 1 is equal to ans position 1, if its not
+   
+    if ((ans[1]) == (guess[1])) {   
+       
+    } else {return 1;}
+    position=2;
+
   }
-    if (digitalRead(button3) == LOW){
+  if (digitalRead(button3) == HIGH) {
     guess[position] = 'E';
-    position++;
-    delay(500);
-    if ((ans[position]) != (guess[position])){return 1;}
+
+   
+    if ((ans[2]) == (guess[2])) {   
+     
+    } else {return 1;}
+    position=3;
+
   }
-   if (digitalRead(button4) == LOW){
+ if (digitalRead(button4) == HIGH) {
     guess[position] = 'R';
-    position++;
-    delay(500);
-    if ((ans[position]) != (guess[position])){return 1;}
+
+    
+    if ((ans[3]) == (guess[3])) {   
+      
+    } else {return 1;}
+    position=4;
+
   }
-    if (digitalRead(button5) == LOW){
+ if (digitalRead(button5) == HIGH) {
     guess[position] = 'T';
-    position++;
-    delay(500);
-    if ((ans[position]) != (guess[position])){return 1;}
+
+    
+    if ((ans[4]) == (guess[4])) {   
+
+    } else {return 1;}
   }
-  
-  if (ans[2] == guess[2]) {return 2;}
-  
-  
-  
-  
-  
+
+  if (ans[4] == guess[4]) {
+    return 2;
+  }
+
+
+
+
+
 
 }
 
