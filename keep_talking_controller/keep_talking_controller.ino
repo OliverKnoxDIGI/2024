@@ -47,11 +47,13 @@ void setup() {
   Wire.begin();
   // begin the serial monitor
   Serial.begin(9600);
+ 
 }
 
 void loop() {
-  // the on off switch for the game, left is high, right is low
- while (digitalRead(ONOFF == HIGH)){
+  // the on off switch for the game, left is 1, right is 0
+   Serial.println(digitalRead(ONOFF));
+ while ((digitalRead((ONOFF)) == 1)){
   // while time is less than 15 mins * 60 seconds * 1000 ms
   while (time < (15 * 60 * 1000)) {
 
@@ -77,6 +79,7 @@ void loop() {
         delay(200);
         //clear the LCD
         lcd.clear();
+        while ((digitalRead((ONOFF)) == 0)){lcd.clear();}
    
 
       }
@@ -85,6 +88,7 @@ void loop() {
         lcd.print("passed...");
         delay(200);
         lcd.clear();
+         while ((digitalRead((ONOFF)) == 0)){lcd.clear();}
     
       }
     // alive alive is 2 then we know we've won the game
@@ -92,6 +96,7 @@ void loop() {
         lcd.print("GAME WON!!!");
         delay(200);
         lcd.clear();
+         while ((digitalRead((ONOFF)) == 0)){lcd.clear();}
      
       }
     //if alive is 99 then we lose
@@ -104,6 +109,7 @@ void loop() {
       // this delay is to ensure player cannot wait out timer (aprox 115 days)
       // only having a delay means we 
       delay(9999999999);
+      
     }
 
 
@@ -122,12 +128,12 @@ void loop() {
    delay(2000);
    //end the game
    lcd.print("Game Over");
-      delay(9999999999);
-      lcd.clear();
+   delay(9999999999);
+   lcd.clear();
 
      
    }
-  //if the switch is off do nothing and clear the LCD
+  //if the LED is off do nothing and clear the LCD
   lcd.clear();
   
 }
