@@ -51,12 +51,11 @@ void setup() {
 }
 
 void loop() {
-  // the on off switch for the game, left is 1, right is 0
-   Serial.println(digitalRead(ONOFF));
- while ((digitalRead((ONOFF)) == 1)){
-  // while time is less than 15 mins * 60 seconds * 1000 ms
-  while (time < (15 * 60 * 1000)) {
 
+ while ((digitalRead((ONOFF)) == 1)){
+  // millis tracks the time that the arudiono has been turned on 
+  // while time is less than 15 mins * 60 seconds * 1000 ms
+  while (millis() < (15* 60 * 1000)) {
     
     
     //request a transmission with this id and message size
@@ -88,7 +87,10 @@ void loop() {
         lcd.print("passed...");
         delay(200);
         lcd.clear();
+        //code fo rthe on off switch
          while ((digitalRead((ONOFF)) == 0)){lcd.clear();}
+        // if the timer over 10 mins and under 10.2 mins, we tell the player they have 5 mins left
+        if (millis() > (10*60*1000) && millis() < (10.2*60*1000)) {lcd.print("5 minutes left!!");}
     
       }
     // alive alive is 2 then we know we've won the game
