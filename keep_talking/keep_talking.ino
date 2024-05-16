@@ -49,7 +49,7 @@ void setup() {
   pinMode(WIRE1, INPUT);
   pinMode(WIRE2, INPUT);
   pinMode(WIRE3, INPUT);
-// set up the serial monitor
+  // set up the serial monitor
   Serial.begin(9600);
 
 }
@@ -75,13 +75,13 @@ void loop() {
     // if the game is lost, send 99 (lose number) to the controller
   } else if (val == 1) {
     alive = 99;
-    Serial.println("game lost");   
-  } 
+    Serial.println("game lost");
+  }
   // handling the return = 0 (untouched)
   else {}
 
 
-  
+
   // same as prev for buttons game
 
   int val2 = buttons();
@@ -163,63 +163,73 @@ int buttons() {
   if (digitalRead(BUTTON1) == HIGH) {
     //position 0 of the guess array is changed from x to a Q
     guess[position] = 'Q';
-  
+
     //check if the first letter in the guess array is equal to the ans array
-    if ((ans[0]) == (guess[0])) {   
-    //if it is we do nothing
+    if ((ans[0]) == (guess[0])) {
+      //if it is we do nothing
     }
     // if its not equal we return 1 to lose the game
-    else {return 1;}
-    // position equal one, instead of postion++, means player cant press all buttons at once
-    position=1;
-     
+    else {
+      return 1;
     }
+    // position equal one, instead of postion++, means player cant press all buttons at once
+    position = 1;
+
+  }
 
   // check if the second "button" is pressed, if it is
-   if (digitalRead(BUTTON2) == HIGH) {
+  if (digitalRead(BUTTON2) == HIGH) {
     //position 1 of the guess array is changed from x to a W
     guess[position] = 'W';
     //check if guess position 1 is equal to ans position 1, if its not
-    if ((ans[1]) == (guess[1])) {   
-       // do nothing
-      
-      
+    if ((ans[1]) == (guess[1])) {
+      // do nothing
+
+
     }
-     // if its not equal we lose
-     else {return 1;}
-     //same reason as before
-    position=2;
+    // if its not equal we lose
+    else {
+      return 1;
+    }
+    //same reason as before
+    position = 2;
 
   }
-  
+
   // we continue to do the same for each butto
   if (digitalRead(BUTTON3) == HIGH) {
     guess[position] = 'E';
 
-   
-    if ((ans[2]) == (guess[2])) {   
-     
-    } else {return 1;}
-    position=3;
+
+    if ((ans[2]) == (guess[2])) {
+
+    } else {
+      return 1;
+    }
+    position = 3;
 
   }
- if (digitalRead(BUTTON4) == HIGH) {
+  if (digitalRead(BUTTON4) == HIGH) {
     guess[position] = 'R';
 
-    
-    if ((ans[3]) == (guess[3])) {   
-      
-    } else {return 1;}
-    position=4;
+
+    if ((ans[3]) == (guess[3])) {
+
+    } else {
+      return 1;
+    }
+    position = 4;
 
   }
- if (digitalRead(BUTTON5) == HIGH) {
+  if (digitalRead(BUTTON5) == HIGH) {
     guess[position] = 'T';
 
-    
-    if ((ans[4]) == (guess[4])) {   
 
-    } else {return 1;}
+    if ((ans[4]) == (guess[4])) {
+
+    } else {
+      return 1;
+    }
   }
   // we then check if the fith position of guess[] is = to ans[]
   // if it is we return 2 to win the minigame
@@ -232,8 +242,8 @@ int buttons() {
 }
 
 /* this method will write the alive variable to the controller arduino,
-it will send a 0,1,2,or 99 for alive, passed one game, passed both games,
-or lost. 
+  it will send a 0,1,2,or 99 for alive, passed one game, passed both games,
+  or lost.
 */
 
 void requestEvent() {
