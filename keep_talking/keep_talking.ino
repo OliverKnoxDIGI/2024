@@ -15,6 +15,9 @@ int alive = 0;
 bool wirePassed = false;
 bool buttonPassed = false;
 
+//this is to check if the fith button has been pressed, means that the game can still be lost after it has been won
+bool finalButtonPressed = false;
+
 // set the wire pins to constants, allowing changability and readability
 const int WIRE1 = 1;
 const int WIRE2 = 2;
@@ -230,14 +233,42 @@ int buttons() {
     } else {
       return 1;
     }
+    finalButtonPressed = true;
   }
-  // we then check if the fith position of guess[] is = to ans[]
-  // if it is we return 2 to win the minigame
-  if (ans[4] == guess[4]) {
-    return 2;
+  /* we check every position of the array is correct,
+    if any are wrong we immedietly lose, this means the
+    player can still lose after the game is won, same
+    with the wires game, this is done as a disarmed bomb can still
+    go off if a wire is cut. we use the finalButtonPressed bool
+    as the game would immediatxely lose otherwise
+
+    if it is we return 2 to win the minigame
+  */
+
+  if (finalButtonPressed == true) {
+    if (ans[4] == guess[4]) {
+      if (ans[3] == guess[3]) {
+        if (ans[2] == guess[2]) {
+          if (ans[1] == guess[1]) {
+            if (ans[0] == guess[0]) {
+              return 2;
+            } else {
+              return 1;
+            }
+          } else {
+            return 1;
+          }
+        } else {
+          return 1;
+        }
+      } else {
+        return 1;
+      }
+    } else {
+      return 1;
+    }
+
   }
-
-
 
 }
 
