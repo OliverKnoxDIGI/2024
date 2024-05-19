@@ -108,7 +108,7 @@ void loop() {
       if (alive == 99) {
         // print "game over to the LCD screen, this lets the player know they have lost
         lcd.print("Game Over");
-        delay(200000);
+        delay(2000);
         lcd.clear();
 
         // this delay is to ensure player cannot wait out timer (aprox 115 days)
